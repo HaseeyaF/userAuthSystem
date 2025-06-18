@@ -1,4 +1,4 @@
-import JWT from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 const userAuth = async (req, res, next) => {
     const {token} = req.cookies; 
@@ -9,14 +9,13 @@ const userAuth = async (req, res, next) => {
 
     try {
         
-        const tokenDecode = JWT.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        if(tokenDecode.id){
-            req.body.userId = tokenDecode.id;  //attach userId to request body
-        } else {
-            return res.json({success: false, message: 'Unauthorized access'});
+        if (!decoded?.id) {
+            return res.status(403).json({ success: false, message: 'Unauthorized access - Invalid token' });
         }
 
+        req.user = { id: decoded.id }; // ✅ store in req.user
         next();  //call controller function
 
     } catch (error) {

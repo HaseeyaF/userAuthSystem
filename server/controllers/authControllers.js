@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import JWT from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
 
@@ -12,17 +12,17 @@ export const register = async (req, res) => {
     }
 
     try {
-        const existingUser = await userModel.findOne({ email });
+        const existingUser = await userModel.findOne({ email });   //check if user already exists
         if (existingUser) {
             return res.json({success: false, message: 'User already exists'})
         }
         
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);  //encrypt password using bcrypt
 
         const user = new userModel({ name, email, password: hashedPassword})  //created new userModel instance
         await user.save();  //save new userModel
 
-        const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' });   
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -30,6 +30,16 @@ export const register = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',   //strict for Local Storage, null for Live Server
             maxAge: 5 * 24 * 60 * 60 * 1000   // 5 days in milliseconds
         });
+
+        //sending welcome email
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: 'Welcome to Our Service',
+            text: `Hello ${name},\n\nThank you for registering with us! We're excited to have you on board.\n\nBest regards,\nService Team`
+        }
+
+        await transporter.sendMail(mailOptions);
 
         return res.json({success: true});  //user successfully registered
     
@@ -57,7 +67,7 @@ export const login = async (req, res) => {
             return res.json({success: false, message: 'Invalid password'});
         }
 
-        const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' });
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -95,7 +105,7 @@ export const sendVerifyOtp = async (req, res) => {
     //const { email } = req.body;
 
     try {
-        const { userId } = req.body;
+        const userId = req.user.id;
         const user = await userModel.findById(userId);
         if (user.isAccountVerified) {
             return res.json({ success: false, message: 'Account already verified' });
