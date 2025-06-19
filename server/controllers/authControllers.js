@@ -105,7 +105,7 @@ export const sendVerifyOtp = async (req, res) => {
     //const { email } = req.body;
 
     try {
-        const userId = req.user.id;
+        const { userId } = req.body;
         const user = await userModel.findById(userId);
         if (user.isAccountVerified) {
             return res.json({ success: false, message: 'Account already verified' });

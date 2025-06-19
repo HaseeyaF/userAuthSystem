@@ -1,20 +1,54 @@
 import React, { useState } from 'react'
 import assets from '../assets/assets'
-import { useNavigate } from 'react-router-dom'
-import { AppContent } from '../context/AppContext'
+import { AppContext } from '../context/AppContext'
+import { useContext, useNavigate } from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+
 
 
 const Login = () => {
 
     const navigate = useNavigate()
 
+    const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContext)
+
     const [state, setState] = useState('Sign Up')
     const [name, setName]=useState('')
     const [email, setEmail]=useState('')
     const [password, setPassword]=useState('')
 
+    const onSubmitHandler = async (e) => {
+        try {
+            e.preventDefault();
+            axios.defaults.withCredentials = true;
 
+            if(state === 'Sign Up'){
+                const {data} = await axios.post(backendUrl + '/api/auth/register', {name, email, password})
 
+                if(data.success){
+                    setIsLoggedin(true);
+                    getUserData()
+                    navigate('/');
+                } else {
+                    toast.error(data.message)
+                }
+            } else {
+                const {data} = await axios.post(backendUrl + '/api/auth/login', {email, password})
+
+                if(data.success){
+                    setIsLoggedin(true);
+                    getUserData()
+                    navigate('/');
+                } else {
+                    toast.error(data.message)
+                }
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
     
 
   return (
@@ -30,7 +64,7 @@ const Login = () => {
             {state === 'Sign Up' ? 'Create your account' : 'Login to your account'}
         </p>
 
-        <form>
+        <form onSubmit={onSubmitHandler}>
             {state === 'Sign Up' && (
                 <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]'>
                     <img src={assets.person_icon} alt="" />
@@ -73,4 +107,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;

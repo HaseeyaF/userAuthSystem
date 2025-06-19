@@ -4,6 +4,6 @@ import { getUserData } from '../controllers/userController.js';
 
 const userRouter = express.Router();
 
-userRouter.get('/data', userAuth, getUserData);  //http://localhost:3000/api/user/data
+userRouter.get('/data', userAuth, getUserData);  //http://localhost:4000/api/user/data
 
 export default userRouter;
