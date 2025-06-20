@@ -43,56 +43,56 @@ This project was part of my effort to strengthen my practical knowledge in:
 | Email        | Nodemailer |
 | Dev Tools    | VS Code, Postman, Git & GitHub |
 
-```
+---
 
 
-## 🛠️ Setup Instructions
+## 🛠️ Setup Instructions - Getting Started
 
 ### 1. Clone the repository
-
+```bash
 git clone https://github.com/your-username/userAuthSystem.git
 cd userAuthSystem
-
-- MySQL Server
-- JasperReports Library
-- JDBC Driver for MySQL
-
+```
+### 2. Set up the Backend
+```bash
+cd server
+npm install
+```
+Create a .env file in the server/ directory and add:
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+NODE_ENV=your_node_env
+SMTP_USER=your_email@example.com
+SMTP_PASS=your_app_password
+SENDER_EMAIL=your_email
+```
+Start the backend server:
+```bash
+npm start server
+```
+Backend will run on http://localhost:4000
+### 3. Set up the Frontend
+```bash
+cd client
+npm install
+npm run dev
+```
+Create a .env file in the server/ directory and add:
+```env
+VITE_BACKEND_URL=http://localhost:4000
+```
+Frontend will run on http://localhost:5173
 
 ---
 
-## 🔮 Future Enhancements
+## 🔮 Future Improvements 
 
-To evolve the POS Inventory System into a more powerful and modern solution, the following enhancements are proposed:
-
-### 🌐 Web-Based Version
-* Develop a **web-based interface** using frameworks like **Spring Boot + React/Angular** to enable remote access and cloud deployment.
-
-### 📱 Mobile App Integration
-* Build a **mobile companion app** (using **Flutter** or **React Native**) for inventory tracking, sales updates, and real-time notifications.
-
-### 🔐 Role-Based Access Control (RBAC)
-* Implement **multi-level user roles** (e.g., Admin, Cashier, Manager) with permissions and audit logging for enhanced security.
-
-### 📦 Supplier and Purchase Order Management
-* Add modules to manage **suppliers**, create **purchase orders**, and track **incoming stock** and **restocking alerts**.
-
-### 🧠 AI-Powered Sales Insights
-* Integrate **machine learning models** to analyze sales trends, suggest stock reorder levels, and forecast high-demand products.
-
-### 🧾 Barcode/QR Code Scanner Support
-* Enable **barcode/QR code generation and scanning** for faster product entry, checkout, and inventory updates.
-
-### 🏪 Multi-Branch Support
-* Extend system capability to handle **multiple store locations**, centralizing data management with branch-wise reporting.
-
-### 🌍 Multi-Language & Currency Support
-* Add support for **internationalization** (i18n) to accommodate various languages and currencies.
-
-### 📤 Cloud Backup and Sync
-* Integrate **cloud storage** (e.g., Google Drive, AWS S3) for secure automatic backups and data syncing across devices.
-
-### 📬 Email & SMS Notifications
-* Enable **automated notifications** for low stock, invoice delivery, or promotions via email/SMS using third-party APIs.
+- Refresh tokens
+- OAuth login (Google, GitHub)
+- Resend OTP button with cooldown
+- Rate-limiting to prevent OTP abuse
+- Multi-language support
 
 ---
 
