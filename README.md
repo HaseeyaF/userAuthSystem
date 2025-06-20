@@ -78,7 +78,7 @@ cd client
 npm install
 npm run dev
 ```
-Create a .env file in the server/ directory and add:
+Create a .env file in the client/ directory and add:
 ```env
 VITE_BACKEND_URL=http://localhost:4000
 ```
