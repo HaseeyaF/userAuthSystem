@@ -37,8 +37,8 @@ This project was part of my effort to strengthen my practical knowledge in:
 
 | Layer        | Technology Used |
 |--------------|--------------------------|
-| Language     | React.js, Tailwind CSS, Axios, React Router DOM |
-| IDE          | Node.js, Express.js, MongoDB, Mongoose |
+| Frontend     | React.js, Tailwind CSS, Axios, React Router DOM |
+| Backend      | Node.js, Express.js, MongoDB, Mongoose |
 | Auth         | JWT, cookie-parser, bcrypt |
 | Email        | Nodemailer |
 | Dev Tools    | VS Code, Postman, Git & GitHub |
